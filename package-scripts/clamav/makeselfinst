@@ -15,13 +15,18 @@ error_exit()
   exit 1
 }
 
-# move the actual files into place
+# Move the actual files into place
 rm -rf $DEST_DIR/* || error_exit "Cannot remove contents of $DEST_DIR"
 mkdir -p $DEST_DIR || error_exit "Cannot create $DEST_DIR"
 cp -R $INSTALLER_DIR $DEST_DIR || error_exit "Cannot install to $DEST_DIR"
 rm -f $DEST_DIR/$PROGNAME
 
-# You may want to symlink your packages bin files into /usr/bin
-ln -sf $DEST_DIR/bin/clamscan /usr/bin || error_exit "Cannot link clamscan to /usr/bin"
+# Symlink all the bins and sbins
+for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan freshclam sigtool; do
+  ln -s $DEST_DIR/bin/$BIN /usr/bin || error_exit "Cannot link $BIN to /usr/bin"
+done
+for SBIN in clamav-milter clamd; do
+  ln -s $DEST_DIR/sbin/$BIN /usr/sbin || error_exit "Cannot link $SBIN to /usr/sbin"
+done
 
 exit 0
