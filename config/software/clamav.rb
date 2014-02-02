@@ -42,6 +42,7 @@ build do
     '--with-user=clamav',
     '--with-group=clamav',
     "--with-zlib=#{install_dir}/embedded",
+    "--with-xml=#{install_dir}/embedded",
     "--with-libncurses-prefix=#{install_dir}/embedded"
   ].join(' '), env: env
 
