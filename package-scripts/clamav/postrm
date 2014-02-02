@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Perform necessary clamav removal steps
+# after package is uninstalled.
+#
+
+getent passwd clamav &> /dev/null && userdel clamav
+
+echo "clamav has been uninstalled!"
+
+exit 0

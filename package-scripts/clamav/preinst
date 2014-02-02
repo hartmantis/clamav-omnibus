@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+# Perform necessary clamav setup steps
+# before package is installed.
+#
+
+getent passwd clamav &> /dev/null || useradd -r clamav
+
+echo "You're about to install clamav!"
