@@ -43,10 +43,14 @@ build do
     '--with-group=clamav',
     "--with-zlib=#{install_dir}/embedded",
     "--with-xml=#{install_dir}/embedded",
-    "--with-libncurses-prefix=#{install_dir}/embedded"
+    "--with-libncurses-prefix=#{install_dir}/embedded",
+    "--with-dbdir=#{install_dir}/db"
   ].join(' '), env: env
 
   command 'make check', env: env
   command "make -j #{max_build_jobs}", env: env
   command 'make install'
+  %w{main.cvd daily.cvd bytecode.cvd safebrowsing.cvd}.each do |f|
+    command "wget -P #{install_dir}/db/ http://db.local.clamav.net/#{f}"
+  end
 end

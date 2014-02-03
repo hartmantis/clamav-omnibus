@@ -1,7 +1,15 @@
 # clamav Omnibus project
 
 This project creates full-stack platform-specific packages for
-`clamav`!
+`ClamAV`!
+
+While most distros have their own vendor ClamAV packages, there are enough
+differences between them to make maintaining the
+[ClamAV Chef cookbook](http://community.opscode.com/cookbooks/clamav) much more
+of a pain than it needs to be. For example,
+
+* Some packages include service/init scripts; some don't
+* Some packages use `/etc/`; some use `/etc/clamav/`
 
 ## Installation
 
