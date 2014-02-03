@@ -33,6 +33,7 @@ build do
     "--bindir=#{install_dir}/bin",
     "--sbindir=#{install_dir}/sbin",
     "--libdir=#{install_dir}/embedded/lib",
+    "--sysconfdir=#{install_dir}/etc",
     '--disable-debug',
     '--disable-dependency-tracking',
     '--enable-ipv6',
