@@ -7,7 +7,7 @@
 #              server.
 # processname: clamd
 # pidfile: /var/run/clamav/clamd.pid
-# config: /etc/clamd.conf
+# config: /opt/clamav/etc/clamd.conf
 
 # Source function library.
 . /etc/rc.d/init.d/functions

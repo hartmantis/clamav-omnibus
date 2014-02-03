@@ -4,9 +4,10 @@
 #		by Ian Murdock <imurdock@gnu.ai.mit.edu>.
 #               Clamav version by Magnus Ekdahl <magnus@debian.org>
 #               Heavily reworked by Stephen Gran <sgran@debian.org>
+#               Modified for Omnibus by Jonathan Hartman <j@p4nt5.com>
 #
 ### BEGIN INIT INFO
-# Provides:          clamav-daemon
+# Provides:          clamd
 # Required-Start:    $remote_fs $syslog
 # Should-Start:      
 # Required-Stop:     $remote_fs $syslog
@@ -21,15 +22,15 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/sbin/clamd
 NAME="clamd"
 DESC="ClamAV daemon"
-CLAMAVCONF=/etc/clamav/clamd.conf
+CLAMAVCONF=/opt/clamav/clamd.conf
 SUPERVISOR=/usr/bin/daemon
 SUPERVISORNAME=daemon
-SUPERVISORPIDFILE="/var/run/clamav/daemon-clamd.pid"
+SUPERVISORPIDFILE="/var/run/clamav/clamd.pid"
 SUPERVISORARGS="--name=$NAME --respawn $DAEMON -F $SUPERVISORPIDFILE"
-DATABASEDIR="/var/lib/clamav"
+DATABASEDIR="/opt/clamav/db"
 
 [ -x "$DAEMON" ] || exit 0
-[ -r /etc/default/clamav-daemon ] && . /etc/default/clamav-daemon
+[ -r /etc/default/clamd ] && . /etc/default/clamd
 
 status_of_proc () {
     local pidfile daemon name status
@@ -274,9 +275,6 @@ StateGenericDigit()
 
 if [ ! -f "$CLAMAVCONF" ]; then
   log_failure_msg "There is no configuration file for Clamav."
-  log_failure_msg "Please either dpkg-reconfigure $DESC, or copy the example from"
-  log_failure_msg "/usr/share/doc/clamav-base/examples/ to $CLAMAVCONF and run"
-  log_failure_msg "'/etc/init.d/clamav-daemon start'"
   exit 1;
 fi
 
@@ -284,7 +282,7 @@ slurp_config "$CLAMAVCONF"
 
 if [ -n "$Example" ]; then
   log_failure_msg "Clamav is not configured."
-  log_failure_msg "Please edit $CLAMAVCONF and run  '/etc/init.d/clamav-daemon start'"
+  log_failure_msg "Please edit $CLAMAVCONF and run  '/etc/init.d/clamd start'"
   exit 0
 fi
 
@@ -332,7 +330,7 @@ case "$1" in
     if [ ! -e "$DATABASEDIR"/"$db".cvd ] && [ ! -d "$DATABASEDIR"/"$db".inc ] && [ ! -e "$DATABASEDIR"/"$db".cld ]; then
       log_failure_msg "Clamav signatures not found in $DATABASEDIR"
       log_failure_msg "Please retrieve them using freshclam"
-      log_failure_msg "Then run '/etc/init.d/clamav-daemon start'"
+      log_failure_msg "Then run '/etc/init.d/clamd start'"
       exit 0
     fi
   done

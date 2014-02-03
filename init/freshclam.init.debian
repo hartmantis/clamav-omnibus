@@ -1,9 +1,9 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          clamav-freshclam
+# Provides:          freshclam
 # Required-Start:    $remote_fs $syslog
-# Should-Start:      clamav-daemon
+# Should-Start:      clamd
 # Required-Stop:     $remote_fs $syslog
 # Should-Stop:       
 # Default-Start:     2 3 4 5
@@ -17,8 +17,8 @@ NAME=freshclam
 DESC="ClamAV virus database updater"
 [ -x $DAEMON ] || exit 0
 
-CLAMAV_CONF_FILE=/etc/clamav/clamd.conf
-FRESHCLAM_CONF_FILE=/etc/clamav/freshclam.conf
+CLAMAV_CONF_FILE=/opt/clamav/etc/clamd.conf
+FRESHCLAM_CONF_FILE=/opt/clamav/etc/freshclam.conf
 PIDFILE=/var/run/clamav/freshclam.pid
 [ -f /var/lib/clamav/interface ] && INTERFACE=`cat /var/lib/clamav/interface`
 
@@ -330,7 +330,7 @@ case "$1" in
   OPTIND=1
   log_daemon_msg "Starting $DESC" "$NAME"
   # If user wants it run from cron, we only accept no-daemon and stop
-  if [ -f /etc/cron.d/clamav-freshclam ]; then
+  if [ -f /etc/cron.d/freshclam ]; then
     log_warning_msg "Not starting $NAME - cron option selected"
     log_warning_msg "Run the init script with the 'no-daemon' option"
     log_end_msg 255
