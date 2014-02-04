@@ -28,7 +28,6 @@ Vagrant.configure('2') do |config|
       c.vm.box_url = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/' \
                      "virtualbox/opscode_#{platform}_chef-provisionerless.box"
     end
-
   end
 
   config.vm.provider :virtualbox do |vb|

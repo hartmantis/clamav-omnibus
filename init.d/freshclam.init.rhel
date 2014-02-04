@@ -6,7 +6,7 @@
 # description: Freshclam is responsible for keeping ClamAV up to date.
 # processname: freshclam
 # pidfile: /var/run/clamav/freshclam.pid
-# config: /opt/clamav/etc/clamd.conf
+# config: /opt/clamav/etc/freshclam.conf
 
 # Source function library.
 . /etc/rc.d/init.d/functions

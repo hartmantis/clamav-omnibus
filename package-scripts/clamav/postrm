@@ -4,8 +4,30 @@
 # after package is uninstalled.
 #
 
-getent passwd clamav &> /dev/null && userdel clamav
+PROGNAME=`basename $0`
 
-echo "clamav has been uninstalled!"
+function error_exit
+{
+  echo "${PROGNAME}: ${1:-"Unknown Error"}" 1>&2
+  exit 1
+}
+
+if [ ! -f /etc/redhat-release -o "x$1" = "x0"]; then
+  # Remove the clamav user
+  getent passwd clamav &> /dev/null && userdel clamav || error_exit "Cannot remove clamav user"
+  
+  # Remove all the bin and sbin symlinks
+  for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan freshclam sigtool; do
+    rm -f /usr/bin/$BIN || error_exit "Cannot remove /usr/bin/$BIN"
+  done
+  for SBIN in clamav-milter clamd; do
+    rm -f /usr/sbin/$SBIN || error_exit "Cannot remove /usr/sbin/$SBIN"
+  done
+  for INIT in clamd freshclam; do
+    rm -f /etc/init.d/$INIT || error_exit "Cannot remove /etc/init.d/$INIT"
+  done
+fi
+
+echo 'ClamAV has been uninstalled!'
 
 exit 0

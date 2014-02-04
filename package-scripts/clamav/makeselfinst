@@ -6,7 +6,6 @@
 PROGNAME=`basename $0`
 INSTALLER_DIR=`dirname $0`
 DEST_DIR=/opt/clamav
-CONFIG_DIR=/etc/clamav
 USAGE="usage: $0"
 
 error_exit()
@@ -27,6 +26,9 @@ for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan freshclam s
 done
 for SBIN in clamav-milter clamd; do
   ln -s $DEST_DIR/sbin/$BIN /usr/sbin || error_exit "Cannot link $SBIN to /usr/sbin"
+done
+for INIT in clamd freshclam; do
+  ln -s $DEST_DIR/init.d/$INIT /etc/init.d || error_exit "Cannot link $INIT to /etc/init.d"
 done
 
 exit 0

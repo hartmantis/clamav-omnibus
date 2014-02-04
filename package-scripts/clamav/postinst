@@ -5,6 +5,9 @@
 #
 
 PROGNAME=$(basename $0)
+INSTALLER_DIR=`dirname $0`
+DEST_DIR=/opt/clamav
+USAGE="usage: $0"
 
 function error_exit
 {
@@ -12,6 +15,17 @@ function error_exit
   exit 1
 }
 
-echo "Thank you for installing clamav!"
+# Symlink all the bins and sbins
+for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan freshclam sigtool; do
+  ln -sf $DEST_DIR/bin/$BIN /usr/bin || error_exit "Cannot link $BIN to /usr/bin"
+done
+for SBIN in clamav-milter clamd; do
+  ln -sf $DEST_DIR/sbin/$BIN /usr/sbin || error_exit "Cannot link $SBIN to /usr/sbin"
+done
+for INIT in clamd freshclam; do
+  ln -sf $DEST_DIR/init.d/$INIT /etc/init.d || error_exit "Cannot link $INIT to /etc/init.d"
+done
+
+echo 'Thank you for installing ClamAV!'
 
 exit 0

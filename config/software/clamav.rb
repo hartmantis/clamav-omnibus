@@ -54,4 +54,9 @@ build do
   %w{main.cvd daily.cvd bytecode.cvd safebrowsing.cvd}.each do |f|
     command "wget -P #{install_dir}/db/ http://db.local.clamav.net/#{f}"
   end
+  command "mkdir -p #{install_dir}/init.d"
+  %w{clamd freshclam}.each do |f|
+    command "cp #{Omnibus.project_root}/init.d/#{f}.init." \
+            "#{OHAI.platform_family} #{install_dir}/init.d/#{f}"
+  end
 end
