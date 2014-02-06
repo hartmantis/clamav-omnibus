@@ -1,0 +1,27 @@
+---
+driver:
+  name: vagrant
+  require_chef_omnibus: true
+  customize:
+    memory: 1536
+    cpus: 2
+  synced_folders:
+    - [<%= File.expand_path('../', __FILE__) %>, "/vagrant"]
+
+platforms:
+  - name: ubuntu-10.04
+  - name: ubuntu-12.04
+  - name: ubuntu-13.10
+  - name: centos-5.10
+  - name: centos-6.5
+
+suites:
+  - name: default
+    run_list:
+      - recipe[clamav-omnibus]
+    attributes:
+      omnibus:
+        project_name: clamav
+        build_user: vagrant
+        build_dir: /vagrant
+        install_dir: /opt/clamav
