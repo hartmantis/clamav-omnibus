@@ -20,6 +20,11 @@
 
 include_recipe 'omnibus'
 
+file '/root/omnibus_build_complete' do
+  content "# This file was created by Chef for #{node['fqdn']}"
+  action :nothing
+end
+
 execute 'Run Omnibus builder' do
   command <<-OMNIBUS_BUILD
     export PATH=/usr/local/bin:$PATH
@@ -28,6 +33,42 @@ execute 'Run Omnibus builder' do
     su #{node['omnibus']['build_user']} \
       -c "bin/omnibus build project #{node['omnibus']['project_name']}"
   OMNIBUS_BUILD
+  not_if { File.exist?('/root/omnibus_build_complete') }
+end
+
+# Clean up the Omnibus artifacts in preparation for package install
+directory node['omnibus']['install_dir'] do
+  recursive true
+  action :delete
+  not_if { File.exist?('/root/omnibus_build_complete') }
+  notifies :create, 'file[/root/omnibus_build_complete]'
+end
+
+# Install the Omnibus package artifact
+case node['platform_family']
+when 'rhel'
+  pkg = "#{node['omnibus']['project_name']}-" \
+        "#{node['omnibus']['project_version']}-" \
+        "#{node['omnibus']['project_build']}.el" \
+        "#{node['platform_version'].to_i}.x86_64.rpm"
+when 'debian'
+  pkg = "#{node['omnibus']['project_name']}_" \
+        "#{node['omnibus']['project_version']}-" \
+        "#{node['omnibus']['project_build']}." \
+        "#{node['platform']}.#{node['platform_version']}_amd64.deb"
+end
+
+package File.join(node['omnibus']['build_dir'], 'pkg', pkg) do
+  provider(
+    case node['platform_family']
+    when 'rhel'
+      Chef::Provider::Package::Rpm
+    when 'debian'
+      Chef::Provider::Package::Dpkg
+    else
+      fail 'Unsupported platform'
+    end
+  )
 end
 
 # vim: ai et ts=2 sts=2 sw=2 ft=ruby
