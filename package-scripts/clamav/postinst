@@ -25,6 +25,7 @@ done
 for INIT in clamd freshclam; do
   ln -sf $DEST_DIR/init.d/$INIT /etc/init.d || error_exit "Cannot link $INIT to /etc/init.d"
 done
+ln -sf $DEST_DIR/etc /etc/clamav || error_exit "Cannot link etc to /etc/clamav"
 
 echo 'Thank you for installing ClamAV!'
 

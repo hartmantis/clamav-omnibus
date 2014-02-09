@@ -3,6 +3,7 @@
 require 'spec_helper'
 
 {
+  '/etc/clamav' => '/opt/clamav/etc',
   '/etc/init.d/clamd' => '/opt/clamav/init.d/clamd',
   '/etc/init.d/freshclam' => '/opt/clamav/init.d/freshclam',
   '/usr/bin/clamav-config' => '/opt/clamav/bin/clamav-config',

@@ -22,13 +22,14 @@ rm -f $DEST_DIR/$PROGNAME
 
 # Symlink all the bins and sbins
 for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan freshclam sigtool; do
-  ln -s $DEST_DIR/bin/$BIN /usr/bin || error_exit "Cannot link $BIN to /usr/bin"
+  ln -sf $DEST_DIR/bin/$BIN /usr/bin || error_exit "Cannot link $BIN to /usr/bin"
 done
 for SBIN in clamav-milter clamd; do
-  ln -s $DEST_DIR/sbin/$BIN /usr/sbin || error_exit "Cannot link $SBIN to /usr/sbin"
+  ln -sf $DEST_DIR/sbin/$BIN /usr/sbin || error_exit "Cannot link $SBIN to /usr/sbin"
 done
 for INIT in clamd freshclam; do
-  ln -s $DEST_DIR/init.d/$INIT /etc/init.d || error_exit "Cannot link $INIT to /etc/init.d"
+  ln -sf $DEST_DIR/init.d/$INIT /etc/init.d || error_exit "Cannot link $INIT to /etc/init.d"
 done
+ln -sf $DEST_DIR/etc /etc/clamav || error_exit "Cannot link etc to /etc/clamav"
 
 exit 0

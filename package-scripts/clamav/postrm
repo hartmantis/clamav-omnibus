@@ -26,6 +26,7 @@ if [ ! -f /etc/redhat-release -o "x$1" = "x0"]; then
   for INIT in clamd freshclam; do
     rm -f /etc/init.d/$INIT || error_exit "Cannot remove /etc/init.d/$INIT"
   done
+  rm -f /etc/clamav || error_exit "Cannot remote /etc/clamav"
 fi
 
 echo 'ClamAV has been uninstalled!'
