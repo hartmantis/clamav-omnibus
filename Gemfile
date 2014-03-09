@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'omnibus', '~> 1.3.0'
+gem 'omnibus', '~> 2.0.0.rc'
 gem 'omnibus-software', github: 'opscode/omnibus-software'
 gem 'berkshelf'
 gem 'test-kitchen'
