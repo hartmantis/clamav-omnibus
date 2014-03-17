@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 name 'libmilter'
-version '8.14.8'
+default_version '8.14.8'
 
 source url: "ftp://ftp.sendmail.org/pub/sendmail/sendmail.#{version}.tar.gz",
        md5: '73bfc621c75dbdd3d719e54685d92577'

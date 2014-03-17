@@ -7,7 +7,7 @@ homepage 'https://github.com/RoboticCheese/clamav-omnibus'
 replaces        'clamav'
 install_path    '/opt/clamav'
 build_version   '0.98.1'
-build_iteration 1
+build_iteration 2
 
 # creates required build directories
 dependency 'preparation'

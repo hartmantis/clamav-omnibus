@@ -23,7 +23,7 @@ suites:
       omnibus:
         project_name: clamav
         project_version: 0.98.1
-        project_build: 1
+        project_build: 2
         build_user: vagrant
         build_dir: /vagrant
         install_dir: /opt/clamav

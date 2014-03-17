@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 name 'clamav'
-version '0.98.1'
+default_version '0.98.1'
 
 dependency 'zlib'
 dependency 'bzip2'
