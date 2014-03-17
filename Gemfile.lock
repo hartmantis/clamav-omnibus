@@ -16,6 +16,7 @@ GEM
       nokogiri
     arr-pm (0.0.9)
       cabin (> 0)
+    ast (1.1.0)
     backports (3.6.0)
     berkshelf (2.0.14)
       activesupport (~> 3.2.0)
@@ -125,7 +126,12 @@ GEM
       rake
       thor (>= 0.16.0)
       uber-s3
+    parser (2.1.7)
+      ast (~> 1.1)
+      slop (~> 3.4, >= 3.4.5)
+    powerpack (0.0.9)
     rack (1.5.2)
+    rainbow (2.0.0)
     rake (10.1.1)
     rbzip2 (0.2.0)
     retryable (1.3.5)
@@ -149,6 +155,11 @@ GEM
       solve (>= 0.4.4)
       varia_model (~> 0.1)
       winrm (~> 1.1.0)
+    rubocop (0.18.1)
+      json (>= 1.7.7, < 2)
+      parser (~> 2.1.3)
+      powerpack (~> 0.0.6)
+      rainbow (>= 1.99.1, < 3.0)
     rubyntlm (0.1.1)
     safe_yaml (1.0.1)
     savon (0.9.5)
@@ -159,6 +170,7 @@ GEM
       nokogiri (>= 1.4.0)
       nori (~> 1.0)
       wasabi (~> 1.0)
+    slop (3.5.0)
     solve (0.8.2)
     systemu (2.5.2)
     test-kitchen (1.2.1)
@@ -197,5 +209,6 @@ DEPENDENCIES
   kitchen-vagrant
   omnibus (~> 2.0)
   omnibus-software!
+  rubocop
   test-kitchen
   vagrant-wrapper
