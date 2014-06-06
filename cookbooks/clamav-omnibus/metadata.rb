@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# Encoding: UTF-8
 
 name              'clamav-omnibus'
 maintainer        'Jonathan Hartman'
@@ -15,5 +15,3 @@ supports          'redhat', '>= 5.0'
 supports          'centos', '>= 5.0'
 supports          'scientific', '>= 5.0'
 supports          'amazon', '>= 5.0'
-
-# vim: ai et ts=2 sts=2 sw=2 ft=ruby

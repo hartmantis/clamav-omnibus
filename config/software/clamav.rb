@@ -1,17 +1,18 @@
-# -*- encoding: utf-8 -*-
+# Encoding: UTF-8
 
 name 'clamav'
-default_version '0.98.1'
+default_version '0.98.3'
 
 dependency 'zlib'
 dependency 'bzip2'
 dependency 'libtool'
 dependency 'ncurses'
 dependency 'libmilter'
+dependency 'openssl'
 
-source url: 'http://downloads.sourceforge.net/project/clamav/clamav/0.98.1/' \
-            'clamav-0.98.1.tar.gz?r=&ts=1391302102&use_mirror=softlayer-dal',
-       md5: 'b1ec7b19dea8385954515ef1d63576d8'
+source url: 'http://downloads.sourceforge.net/project/clamav/clamav/0.98.3/' \
+            'clamav-0.98.3.tar.gz?r=&ts=1399495935&use_mirror=softlayer-dal',
+       md5: 'b649d35ee85d4d6075a98173dd255c17'
 
 relative_path "#{name}-#{version}"
 
@@ -42,6 +43,7 @@ build do
     '--disable-clamav',
     '--with-user=clamav',
     '--with-group=clamav',
+    "--with-openssl=#{install_dir}/embedded",
     "--with-zlib=#{install_dir}/embedded",
     "--with-xml=#{install_dir}/embedded",
     "--with-libncurses-prefix=#{install_dir}/embedded",

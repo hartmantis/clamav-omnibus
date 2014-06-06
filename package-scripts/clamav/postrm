@@ -17,7 +17,7 @@ if [ ! -f /etc/redhat-release -o "x$1" = "x0"]; then
   getent passwd clamav &> /dev/null && userdel clamav || error_exit "Cannot remove clamav user"
   
   # Remove all the bin and sbin symlinks
-  for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan freshclam sigtool; do
+  for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan clamsubmit freshclam sigtool; do
     rm -f /usr/bin/$BIN || error_exit "Cannot remove /usr/bin/$BIN"
   done
   for SBIN in clamav-milter clamd; do

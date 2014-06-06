@@ -1,13 +1,12 @@
-# -*- encoding: utf-8 -*-
+# Encoding: UTF-8
 
 source 'https://rubygems.org'
 
-gem 'omnibus', '~> 2.0'
+gem 'omnibus', '~> 3.1'
 gem 'omnibus-software', github: 'opscode/omnibus-software'
 gem 'berkshelf'
 gem 'rubocop'
 gem 'test-kitchen'
+gem 'kitchen-digitalocean'
 gem 'kitchen-vagrant'
 gem 'vagrant-wrapper'
-
-# vim: ai et ts=2 sts=2 sw=2 ft=ruby

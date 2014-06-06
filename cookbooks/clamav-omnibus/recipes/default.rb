@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# Encoding: UTF-8
 #
 # Cookbook Name:: clamav-omnibus
 # Recipe:: default
@@ -25,14 +25,18 @@ file '/root/omnibus_build_complete' do
   action :nothing
 end
 
-execute 'Run Omnibus builder' do
+execute 'Install bundled Gems' do
+  cwd node['omnibus']['build_dir']
   command <<-OMNIBUS_BUILD
-    export PATH=/usr/local/bin:$PATH
-    cd #{node['omnibus']['build_dir']} && \
-    su #{node['omnibus']['build_user']} -c "bundle install --binstubs" && \
-    su #{node['omnibus']['build_user']} \
-      -c "bin/omnibus build project #{node['omnibus']['project_name']}"
+    bundle install --binstubs
   OMNIBUS_BUILD
+end
+
+execute 'Run Omnibus build' do
+  cwd node['omnibus']['build_dir']
+  user node['omnibus']['build_user']
+  group node['omnibus']['build_user']
+  command "bin/omnibus build project #{node['omnibus']['project_name']}"
   not_if { File.exist?('/root/omnibus_build_complete') }
 end
 
@@ -41,7 +45,6 @@ directory node['omnibus']['install_dir'] do
   recursive true
   action :delete
   not_if { File.exist?('/root/omnibus_build_complete') }
-  notifies :create, 'file[/root/omnibus_build_complete]'
 end
 
 # Install the Omnibus package artifact
@@ -69,6 +72,5 @@ package File.join(node['omnibus']['build_dir'], 'pkg', pkg) do
       fail 'Unsupported platform'
     end
   )
+  notifies :create, 'file[/root/omnibus_build_complete]'
 end
-
-# vim: ai et ts=2 sts=2 sw=2 ft=ruby
