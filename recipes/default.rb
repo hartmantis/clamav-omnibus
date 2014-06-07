@@ -34,9 +34,10 @@ file '/root/omnibus_build_complete' do
 end
 
 execute 'Install bundled Gems' do
+  user node['omnibus']['build_user']
   cwd node['omnibus']['build_dir']
   command <<-OMNIBUS_BUILD
-    bundle install --binstubs
+    sudo bundle install --binstubs
   OMNIBUS_BUILD
 end
 
