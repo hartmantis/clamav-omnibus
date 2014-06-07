@@ -5,7 +5,8 @@ driver:
   customize:
     cpus: 2
     memory: 2048
-  # For other, cloud drivers
+  digitalocean_client_id: <%= ENV['DIGITALOCEAN_CLIENT_ID'] %>
+  digitalocean_api_key: <%= ENV['DIGITALOCEAN_API_KEY'] %>
   flavor: 2GB
 
 platforms:
