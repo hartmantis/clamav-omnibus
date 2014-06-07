@@ -54,11 +54,11 @@ build do
   command "make -j #{max_build_jobs}", env: env
   command 'make install'
   command "mkdir -p #{install_dir}/db"
-  %w{main.cvd daily.cvd bytecode.cvd safebrowsing.cvd}.each do |f|
+  %w(main.cvd daily.cvd bytecode.cvd safebrowsing.cvd).each do |f|
     command "wget -P #{install_dir}/db/ http://db.local.clamav.net/#{f}"
   end
   command "mkdir -p #{install_dir}/init.d"
-  %w{clamd freshclam}.each do |f|
+  %w(clamd freshclam).each do |f|
     command "cp #{Omnibus.project_root}/init.d/#{f}.init." \
             "#{Ohai.platform_family} #{install_dir}/init.d/#{f}"
   end
