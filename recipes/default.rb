@@ -21,10 +21,6 @@
 include_recipe 'apt' if node['platform_family'] == 'debian'
 include_recipe 'sudo'
 
-user node['omnibus']['build_user'] do
-  home node['omnibus']['build_dir']
-end
-
 sudo node['omnibus']['build_user'] do
   user node['omnibus']['build_user']
   nopasswd true
