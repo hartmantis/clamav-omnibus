@@ -4,7 +4,6 @@ name 'clamav'
 maintainer 'Jonathan Hartman'
 homepage 'https://github.com/RoboticCheese/clamav-omnibus'
 
-replaces        'clamav'
 install_path    '/opt/clamav'
 build_version   '0.98.3'
 build_iteration 1

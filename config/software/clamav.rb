@@ -60,6 +60,6 @@ build do
   command "mkdir -p #{install_dir}/init.d"
   %w{clamd freshclam}.each do |f|
     command "cp #{Omnibus.project_root}/init.d/#{f}.init." \
-            "#{OHAI.platform_family} #{install_dir}/init.d/#{f}"
+            "#{Ohai.platform_family} #{install_dir}/init.d/#{f}"
   end
 end
