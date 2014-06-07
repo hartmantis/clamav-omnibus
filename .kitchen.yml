@@ -3,17 +3,21 @@ driver:
   name: vagrant
   require_chef_omnibus: true
   customize:
-    memory: 1536
     cpus: 2
-  synced_folders:
-    - [<%= File.expand_path('../', __FILE__) %>, "/vagrant"]
+    memory: 2048
+  # For other, cloud drivers
+  flavor: 2GB
 
 platforms:
   - name: ubuntu-10.04
   - name: ubuntu-12.04
   - name: ubuntu-13.10
+  - name: ubuntu-14.04
   - name: centos-5.10
   - name: centos-6.5
+
+provisioner:
+  cookbook_files_glob: "**/*"
 
 suites:
   - name: default
@@ -22,8 +26,10 @@ suites:
     attributes:
       omnibus:
         project_name: clamav
-        project_version: 0.98.1
+        project_version: 0.98.3
         project_build: 1
-        build_user: vagrant
-        build_dir: /vagrant
+        build_user: omnibus
+        build_dir: /tmp/kitchen/cookbooks/clamav-omnibus
         install_dir: /opt/clamav
+      package_cloud:
+        token: <%= ENV['PACKAGE_CLOUD_TOKEN'] %>

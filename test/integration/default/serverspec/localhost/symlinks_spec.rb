@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# Encoding: UTF-8
 
 require 'spec_helper'
 
@@ -12,6 +12,7 @@ require 'spec_helper'
   '/usr/bin/clamdscan' => '/opt/clamav/bin/clamdscan',
   '/usr/bin/clamdtop' => '/opt/clamav/bin/clamdtop',
   '/usr/bin/clamscan' => '/opt/clamav/bin/clamscan',
+  '/usr/bin/clamsubmit' => '/opt/clamav/bin/clamsubmit',
   '/usr/bin/freshclam' => '/opt/clamav/bin/freshclam',
   '/usr/bin/sigtool' => '/opt/clamav/bin/sigtool',
   '/usr/sbin/clamav-milter' => '/opt/clamav/sbin/clamav-milter',
@@ -23,5 +24,3 @@ require 'spec_helper'
     end
   end
 end
-
-# vim: ai et ts=2 sts=2 sw=2 ft=ruby
