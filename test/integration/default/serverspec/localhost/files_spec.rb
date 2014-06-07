@@ -2,10 +2,10 @@
 
 require 'spec_helper'
 
-%w{
+%w(
   /opt/clamav/etc/clamd.conf
   /opt/clamav/etc/freshclam.conf
-}.each do |f|
+).each do |f|
   describe "clamav Omnibus file #{f}" do
     it 'is created' do
       pending 'Config files not quite decided yet'

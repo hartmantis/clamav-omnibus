@@ -1,0 +1,7 @@
+---
+driver:
+  name: digitalocean
+  digitalocean_client_id: <%= ENV['DIGITALOCEAN_CLIENT_ID'] %>
+  digitalocean_api_key: <%= ENV['DIGITALOCEAN_API_KEY'] %>
+  ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEY_IDS'] %>
+  flavor: 2GB

@@ -45,7 +45,8 @@ execute 'Run Omnibus build' do
   cwd node['omnibus']['build_dir']
   user node['omnibus']['build_user']
   group node['omnibus']['build_user_group']
-  command "bin/omnibus build project #{node['omnibus']['project_name']}"
+  command 'bundle exec bin/omnibus build project ' <<
+          node['omnibus']['project_name']
   not_if { File.exist?('/root/omnibus_build_complete') }
 end
 
