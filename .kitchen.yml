@@ -7,7 +7,8 @@ driver:
     memory: 2048
   digitalocean_client_id: <%= ENV['DIGITALOCEAN_CLIENT_ID'] %>
   digitalocean_api_key: <%= ENV['DIGITALOCEAN_API_KEY'] %>
-  flavor: 2GB
+  ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEY_IDS'] %>
+  flavor: 4GB
 
 platforms:
   - name: ubuntu-10.04
