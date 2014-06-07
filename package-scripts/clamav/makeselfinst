@@ -21,7 +21,7 @@ cp -R $INSTALLER_DIR $DEST_DIR || error_exit "Cannot install to $DEST_DIR"
 rm -f $DEST_DIR/$PROGNAME
 
 # Symlink all the bins and sbins
-for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan freshclam sigtool; do
+for BIN in clamav-config clambc clamconf clamdscan clamdtop clamscan clamsubmit freshclam sigtool; do
   ln -sf $DEST_DIR/bin/$BIN /usr/bin || error_exit "Cannot link $BIN to /usr/bin"
 done
 for SBIN in clamav-milter clamd; do

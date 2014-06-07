@@ -8,3 +8,5 @@ files/**/cache/
 vendor/cookbooks
 Berksfile.lock
 .kitchen/
+.kitchen.local.yml
+.env.sh

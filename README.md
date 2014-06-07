@@ -1,4 +1,5 @@
-# clamav Omnibus project
+clamav Omnibus project
+======================
 
 This project creates full-stack platform-specific packages for `ClamAV`!
 
@@ -10,7 +11,8 @@ of a pain than it needs to be. For example,
 * Some packages include service/init scripts; some don't
 * Some packages use `/etc/`; some use `/etc/clamav/`
 
-## Usage
+Usage
+-----
 
 This project uses Chef's [Omnibus](https://github.com/opscode/omnibus-ruby)
 project, driven by [Vagrant](http://www.vagrantup.com) and
@@ -18,12 +20,7 @@ project, driven by [Vagrant](http://www.vagrantup.com) and
 supported distro.
 
 To get started, you must have Ruby 1.9+ with Bundler, VirtualBox, and Vagrant
-already installed. Next, you'll need to install two required Vagrant plugins:
-
-  vagrant plugin install vagrant-omnibus
-  vagrant plugin install vagrant-berkshelf
-
-All other dependencies can be installed with Bundler:
+already installed. All other dependencies can be installed with Bundler:
 
   bundle install
 
@@ -44,7 +41,8 @@ running Omnibus directly:
 
   bin/omnibus build project clamav
 
-## Contributing
+Contributing
+------------
 
 Pull requests on GitHub are always welcome!
 

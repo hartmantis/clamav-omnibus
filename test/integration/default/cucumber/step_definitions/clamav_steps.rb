@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# Encoding: UTF-8
 
 require 'tempfile'
 
@@ -30,5 +30,3 @@ Then 'ClamAV detects a virus' do
   expect(@res).to include("#{@f.path}: Eicar-Test-Signature FOUND\n")
   expect(@res).to include("\nInfected files: 1\n")
 end
-
-# vim: ai et ts=2 sts=2 sw=2 ft=ruby
