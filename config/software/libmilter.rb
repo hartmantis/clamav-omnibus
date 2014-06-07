@@ -1,10 +1,10 @@
 # Encoding: UTF-8
 
 name 'libmilter'
-default_version '8.14.8'
+default_version '8.14.9'
 
 source url: "ftp://ftp.sendmail.org/pub/sendmail/sendmail.#{version}.tar.gz",
-       md5: '73bfc621c75dbdd3d719e54685d92577'
+       md5: '6a3bdceffa592316f830be289a4bd783'
 
 relative_path "sendmail-#{version}/libmilter"
 
@@ -13,7 +13,7 @@ libdir = "#{prefix}/lib"
 
 require 'etc'
 
-user = Etc.getlogin
+user = Etc.getpwuid(Process.uid).name
 env = {
   'LDFLAGS' => "-L#{libdir} -I#{prefix}/include",
   'CFLAGS' => "-L#{libdir} -I#{prefix}/include -fPIC",
