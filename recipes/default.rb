@@ -81,8 +81,7 @@ when 'rhel'
 when 'debian'
   pkg = "#{node['omnibus']['project_name']}_" \
         "#{node['omnibus']['project_version']}-" \
-        "#{node['omnibus']['project_build']}." \
-        "#{node['platform']}.#{node['platform_version']}_amd64.deb"
+        "#{node['omnibus']['project_build']}_amd64.deb"
 end
 
 package File.join(node['omnibus']['build_dir'], 'pkg', pkg) do
