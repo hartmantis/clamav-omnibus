@@ -3,12 +3,13 @@
 name 'clamav'
 default_version '0.98.3'
 
-dependency 'zlib'
 dependency 'bzip2'
+dependency 'curl'
+dependency 'libmilter'
 dependency 'libtool'
 dependency 'ncurses'
-dependency 'libmilter'
 dependency 'openssl'
+dependency 'zlib'
 
 source url: 'http://downloads.sourceforge.net/project/clamav/clamav/0.98.3/' \
             'clamav-0.98.3.tar.gz?r=&ts=1399495935&use_mirror=softlayer-dal',
