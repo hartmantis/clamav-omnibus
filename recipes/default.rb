@@ -59,7 +59,7 @@ execute 'Run Omnibus build' do
   command <<-OMNIBUS_BUILD
     su - #{node['omnibus']['build_user']} -c \
       'cd #{node['omnibus']['build_dir']} && \
-      bin/omnibus build project #{node['omnibus']['project_name']}'
+      bin/omnibus build #{node['omnibus']['project_name']}'
   OMNIBUS_BUILD
   not_if { File.exist?(touch_when_complete) }
 end
