@@ -11,7 +11,6 @@ version           '0.1.0'
 depends           'apt'
 depends           'git'
 depends           'omnibus'
-depends           'sudo'
 
 supports          'ubuntu', '>= 10.04'
 supports          'redhat', '>= 5.0'
