@@ -19,42 +19,56 @@
 #
 
 include_recipe 'apt' if node['platform_family'] == 'debian'
-include_recipe 'sudo'
-
-sudo node['omnibus']['build_user'] do
-  user node['omnibus']['build_user']
-  nopasswd true
-end
-
 include_recipe 'omnibus'
 
-file '/root/omnibus_build_complete' do
+touch_when_complete = '/root/omnibus_build_complete'
+
+file touch_when_complete do
   content "# This file was created by Chef for #{node['fqdn']}"
   action :nothing
 end
 
+cookbook_path = File.join('/tmp/kitchen/cookbooks', cookbook_name.to_s)
+
+ruby_block 'copy_everything_to_build_dir' do
+  block do
+    # Put everything in /home/omnibus to bypass issues with the contents of
+    # /tmp/kitchen being owned by root
+    require 'fileutils'
+    FileUtils.rm_rf(node['omnibus']['build_dir'])
+    FileUtils.cp_r(cookbook_path, node['omnibus']['build_dir'])
+    FileUtils.chown_R(node['omnibus']['build_user'],
+                      node['omnibus']['build_user_group'],
+                      node['omnibus']['build_dir'])
+  end
+  not_if { File.exist?(touch_when_complete) }
+end
+
 execute 'Install bundled Gems' do
-  user node['omnibus']['build_user']
-  cwd node['omnibus']['build_dir']
+  # The execute resource's `user` method doesn't allocate a TTY, doesn't pull
+  # in all the environment variables Bundler and Omnibus need to run,
+  # otherwise we'd use `user`, `group`, and `cwd` for these
   command <<-OMNIBUS_BUILD
-    sudo bundle install --binstubs
+    su - #{node['omnibus']['build_user']} -c \
+      'cd #{node['omnibus']['build_dir']} && \
+      bundle install --binstubs'
   OMNIBUS_BUILD
 end
 
 execute 'Run Omnibus build' do
-  cwd node['omnibus']['build_dir']
-  user node['omnibus']['build_user']
-  group node['omnibus']['build_user_group']
-  command 'bundle exec bin/omnibus build project ' <<
-          node['omnibus']['project_name']
-  not_if { File.exist?('/root/omnibus_build_complete') }
+  command <<-OMNIBUS_BUILD
+    su - #{node['omnibus']['build_user']} -c \
+      'cd #{node['omnibus']['build_dir']} && \
+      bin/omnibus build project #{node['omnibus']['project_name']}'
+  OMNIBUS_BUILD
+  not_if { File.exist?(touch_when_complete) }
 end
 
 # Clean up the Omnibus artifacts in preparation for package install
 directory node['omnibus']['install_dir'] do
   recursive true
   action :delete
-  not_if { File.exist?('/root/omnibus_build_complete') }
+  not_if { File.exist?(touch_when_complete) }
 end
 
 # Install the Omnibus package artifact
@@ -82,5 +96,5 @@ package File.join(node['omnibus']['build_dir'], 'pkg', pkg) do
       fail 'Unsupported platform'
     end
   )
-  notifies :create, 'file[/root/omnibus_build_complete]'
+  notifies :create, "file[#{touch_when_complete}]"
 end
