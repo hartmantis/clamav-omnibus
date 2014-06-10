@@ -26,17 +26,8 @@ ruby_gem 'package_cloud' do
   ruby node['omnibus']['ruby_version']
 end
 
-file File.join(build_user_home, '.packagecloud') do
-  content <<-EOH.gsub(/^ {4}/, '')
-    {
-      "https://packagecloud.io": "https://packagecloud.io",
-      "token": "#{node['package_cloud']['token']}"
-    }
-  EOH
-end
-
 execute 'Push Omnibus artifact to PackageCloud repo' do
-  user = node['package_cloud']['user']
+  user = node['packagecloud']['user']
   repo = node['omnibus']['project_name']
   distro = case node['platform_family']
            when 'rhel'
@@ -44,6 +35,7 @@ execute 'Push Omnibus artifact to PackageCloud repo' do
            else
              "#{node['platform']}/#{node['lsb']['codename']}"
            end
+  environment('PACKAGECLOUD_TOKEN' => node['packagecloud']['token'])
   command <<-EOH
     su - #{node['omnibus']['build_user']} -c \
       'package_cloud push #{user}/#{repo}/#{distro} \

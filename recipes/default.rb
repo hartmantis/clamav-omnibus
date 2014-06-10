@@ -18,4 +18,4 @@
 # limitations under the License.
 #
 
-include_recipe "#{cookbook_name}::build
+include_recipe "#{cookbook_name}::build"
