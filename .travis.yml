@@ -2,8 +2,9 @@ language: ruby
 
 env:
   global:
-    - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
-    - secure: Nla9OdwthQ2tvpr2HvkDSjlJ9l/AKiqmK/4woqlKjG3IBJJitSKsVH0zTkcBMuvTsTT54c/zwQAfSQSPfwfHVxTtF+j7eNFRxJvJ+u3rlMfvoyrJ1rJLjEk0SLfckEuFFstz77FXE5XitNxyzpahfB+3QwJdR9msFYTj1hSM0Ak=
-    - secure: NI5CxWSQV8LvuOMSrFvi1MmvuDEwb4hvzd6WQtUFZ/0ueYmuze1dbnGglCdmL6yZX12A3WEwgDEYy8asfePO5dM3Mlt8k5hU2V+g1uIVBqYcy6Xf+dzkzb0PQeQV41vsPhQVgFU93+G91glCt4WPB5fx7/6WVQpAiBdux7MDzRk=
-    - secure: fdRCmL/SafBeiQLrwT0bZSt/SaBcLE4C445vSX54pj7dzN7JAiv6dRuqHxibAwtEZsblVd0uT9nzBnKTQX+yoChP5umtEMomvoomxinaCkbaWZZ/lVE8675cKtPEsY0qA9lSmCuxbkm9DHirTLoWE1pSX4WjN6v7wZ/CuBFch20=
-    - secure: aFtuLw5AHUr+DluhKsHowBflqaFDaoP+5vm/tmSCxaUw7/Ac7bT7f0amPvxPMzzzHM/Zf4yB7Pd2A3kPIzDC6SUrlIYxb0ow4Wv8Qb3AnidKhawFUWlbX2Ilm4bSWXmUpuJ0EHOBQ8hq8JN5x09Dr4ZBIa4AfvNmC3EDqJYpYlo=
+    - KITCHEN_GLOBAL_YAML=.kitchen.travis.yml
+    - PACKAGE_CLOUD_USER=RoboticCheese
+    - secure: "qUTq45+K5jFd6AMLP+clHWru6RrhiUICCyOeFVTggBqm7mAQ3dK9ZBHFp7nmVSRkx9WgrzjM3ce/CL2Nl73qnZ//7tZWVRlMnxR2r7Yz/39WGIhshWMFUweIgZT/FoJwVKeqbkwKsQexgLmSpjTk6YSQThI6SiOOWoTUYm1wz1g="
+    - secure: "SDYTF8vvp7yXLFIz5idVYb6rYWJd5x1A369zfKjJLRQYgEqIjyeXpqUYxajXwUC7UYY0CfunSMoo4amG3IQh0JNIlIIL168AvEU+/RJTLmuVpDPcB12n42cFW/TDbyX5Pi4uo7UzBuQMP200vfdLNvNrXmG89zQJM9a93c4RfTk="
+    - secure: "ovvUitM4RbcocBTtQfeP2HZ46j+jfs8zo+Ad7te0V0t3JM3wPmQjMvZ2XB0BcUVFmEEfsu6pjf6aMBCPZiAFkCL+v56X4F4XNOM0hHndviyQua7dETAsyTfYN3rO29mpo+ccxPPGSdOTedsdmfyYE3urjL0t93Hqkc8cxGydils="
+    - secure: "qZG69xv8lyawl+SEgWmPc8LwjcsmkORkrjXA872my3vAF6vqBb/RGZ56WR4PWXqX8bgBooBjFbMu8hqgc4+xqqJFDFmY9FKz3P50EUKdfSagciYhgjtlYH5AlLvWVDmwBfliW+oU95bFRLzi9yqEz6ebxzlL1xTCJZtBO6IAXxc="

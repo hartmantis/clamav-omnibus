@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: clamav-omnibus
-# Recipe:: upload_artifact
+# Recipe:: deploy
 #
 # Copyright 2014, Jonathan Hartman
 #
@@ -18,16 +18,35 @@
 # limitations under the License.
 #
 
+# TODO: Sugar isn't being included in the ruby_gem resource
+include_recipe 'chef-sugar'
+
 # TODO: Robustify this and make a separate package_cloud cookbook
 ruby_gem 'package_cloud' do
   ruby node['omnibus']['ruby_version']
 end
 
-file File.expand_path('~/.packagecloud') do
+file File.join(build_user_home, '.packagecloud') do
   content <<-EOH.gsub(/^ {4}/, '')
     {
       "https://packagecloud.io": "https://packagecloud.io",
       "token": "#{node['package_cloud']['token']}"
     }
+  EOH
+end
+
+execute 'Push Omnibus artifact to PackageCloud repo' do
+  user = node['package_cloud']['user']
+  repo = node['omnibus']['project_name']
+  distro = case node['platform_family']
+           when 'rhel'
+             "el/#{node['platform_version'].to_i}"
+           else
+             "#{node['platform']}/#{node['lsb']['codename']}"
+           end
+  command <<-EOH
+    su - #{node['omnibus']['build_user']} -c \
+      'package_cloud push #{user}/#{repo}/#{distro} \
+      #{node['omnibus']['artifact']}'
   EOH
 end
