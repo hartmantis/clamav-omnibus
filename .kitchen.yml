@@ -34,4 +34,5 @@ suites:
         build_dir: /home/omnibus/clamav
         install_dir: /opt/clamav
       package_cloud:
+        user: <%= ENV['PACKAGE_CLOUD_USER'] %>
         token: <%= ENV['PACKAGE_CLOUD_TOKEN'] %>
