@@ -18,4 +18,19 @@
 # limitations under the License.
 #
 
-default['authorization']['sudo']['include_sudoers_d'] = true
+default['package_cloud']['user'] = nil
+default['package_cloud']['token'] = nil
+
+case node['platform_family']
+when 'rhel'
+  pkg = "#{node['omnibus']['project_name']}-" \
+        "#{node['omnibus']['project_version']}-" \
+        "#{node['omnibus']['project_build']}.el" \
+        "#{node['platform_version'].to_i}.x86_64.rpm"
+when 'debian'
+  pkg = "#{node['omnibus']['project_name']}_" \
+        "#{node['omnibus']['project_version']}-" \
+        "#{node['omnibus']['project_build']}_amd64.deb"
+end
+default['omnibus']['artifact'] = File.join(node['omnibus']['build_dir'], 'pkg',
+                                           pkg)
