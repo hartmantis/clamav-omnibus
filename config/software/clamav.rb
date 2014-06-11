@@ -63,4 +63,7 @@ build do
     command "cp #{Omnibus.project_root}/init.d/#{f}.init." \
             "#{Ohai.platform_family} #{install_dir}/init.d/#{f}"
   end
+  # TODO: ClamAV's source includes a set of three `.sample` config files that
+  # do not contain working configs. We need to create a set of all-defaults
+  # and dump then in here
 end
