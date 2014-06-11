@@ -26,7 +26,9 @@ ruby_gem 'package_cloud' do
   ruby node['omnibus']['ruby_version']
 end
 
-execute 'Push Omnibus artifact to PackageCloud repo' do
+# The chruby.sh script contains what are syntax errors to sh; we need bash here
+# instead of an execute resource
+bash 'Push Omnibus artifact to PackageCloud repo' do
   user = node['packagecloud']['user']
   repo = node['omnibus']['project_name']
   distro = case node['platform_family']
@@ -35,10 +37,16 @@ execute 'Push Omnibus artifact to PackageCloud repo' do
            else
              "#{node['platform']}/#{node['lsb']['codename']}"
            end
-  environment('PACKAGECLOUD_TOKEN' => node['packagecloud']['token'])
-  command <<-EOH
-    su - #{node['omnibus']['build_user']} -c \
-      'package_cloud push #{user}/#{repo}/#{distro} \
-      #{node['omnibus']['artifact']}'
+  environment(
+    'PACKAGECLOUD_TOKEN' => node['packagecloud']['token'],
+    # TODO: The encoding only needs to be set here because, otherwise,
+    # package_cloud ends up expecting ASCII and erroring when the API throws
+    # back non-ASCII characters in its JSON responses
+    'LC_ALL' => 'en_US.UTF-8'
+  )
+  code <<-EOH
+    source /usr/local/share/chruby/chruby.sh && \
+    chruby #{node['omnibus']['ruby_version']} && \
+    package_cloud push #{user}/#{repo}/#{distro} #{node['omnibus']['artifact']}
   EOH
 end
