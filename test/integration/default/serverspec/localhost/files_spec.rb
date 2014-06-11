@@ -9,7 +9,7 @@ require 'spec_helper'
   describe "clamav Omnibus file #{f}" do
     it 'is created' do
       pending 'Config files not quite decided yet'
-      expect(file(d)).to be_file
+      expect(file(f)).to be_file
     end
   end
 end
