@@ -41,4 +41,4 @@ namespace :build_and_deploy do
   task default: %w(rubocop all)
 end
 
-task default: %w(rubocop kitchen:all)
+task default: %w(rubocop build_and_deploy:all)

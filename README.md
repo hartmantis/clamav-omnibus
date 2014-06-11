@@ -1,5 +1,8 @@
 clamav Omnibus project
 ======================
+[![Build Status](http://img.shields.io/travis/RoboticCheese/clamav-omnibus.svg)][travis]
+
+[travis]: http://travis-ci.org/RoboticCheese/clamav-omnibus
 
 This project creates full-stack platform-specific packages for `ClamAV`!
 
@@ -72,7 +75,7 @@ To start a full build run of all platforms, just call Test Kitchen:
 
 To start a full build run and publish the resulting artifacts:
 
-    rake build_and_deploy:all
+    rake
 
 If you have no need for the VMs, a local build can also be initiated by
 running Omnibus directly:
