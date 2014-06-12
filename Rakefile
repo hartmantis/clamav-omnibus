@@ -3,8 +3,38 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'rubocop/rake_task'
+require 'fog'
 require 'kitchen'
 require 'kitchen/rake_tasks'
+
+instances = Kitchen::Config.new.instances
+
+def compute
+  Fog::Compute.new(provider: 'DigitalOcean',
+                   digitalocean_client_id: ENV['DIGITALOCEAN_CLIENT_ID'],
+                   digitalocean_api_key: ENV['DIGITALOCEAN_API_KEY'])
+end
+
+def kitchen_keys
+  instances.map { |i| i.driver[:ssh_key] }.uniq
+end
+
+def key_name(index)
+  "clamav-omnibus-deploy-#{ENV['TRAVIS_BUILD_NUMBER']}-#{index}"
+end
+
+def upload_keys_to_digitalocean!
+  kitchen_keys.each_with_index do |i, k|
+    compute.ssh_keys.create(name: key_name(i),
+                            ssh_pub_key: File.open(k).read)
+  end
+end
+
+def delete_keys_from_digitalocean!
+  kitchen_keys.each do |k|
+    compute.ssh_keys.each { |kobj| kobj.destroy if kobj.name == k }
+  end
+end
 
 RuboCop::RakeTask.new do |task|
   task.patterns = %w(**/*.rb)
@@ -26,7 +56,13 @@ namespace :build_and_deploy do
     instance.converge
   end
 
-  instances = Kitchen::Config.new.instances
+  task :deploy_keys do
+    upload_keys_to_digitalocean!
+  end
+
+  task :clean_up_keys do
+    delete_keys_from_digitalocean!
+  end
 
   instances.each do |i|
     desc "Build and deploy for #{i.name}"
@@ -38,7 +74,7 @@ namespace :build_and_deploy do
   desc 'Build and deploy for all instances'
   task all: instances.map { |i| i.name }
 
-  task default: %w(rubocop all)
+  task default: %w(deploy_keys all clean_up_keys)
 end
 
-task default: %w(rubocop build_and_deploy:all)
+task default: %w(rubocop build_and_deploy)
