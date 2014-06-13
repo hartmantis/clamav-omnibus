@@ -7,7 +7,9 @@ require 'fog'
 require 'kitchen'
 require 'kitchen/rake_tasks'
 
-instances = Kitchen::Config.new.instances
+def instances
+  Kitchen::Config.new.instances
+end
 
 def compute
   Fog::Compute.new(provider: 'DigitalOcean',
@@ -24,15 +26,15 @@ def key_name(index)
 end
 
 def upload_keys_to_digitalocean!
-  kitchen_keys.each_with_index do |i, k|
+  kitchen_keys.each_with_index do |k, i|
     compute.ssh_keys.create(name: key_name(i),
-                            ssh_pub_key: File.open(k).read)
+                            ssh_pub_key: File.open("#{k}.pub").read)
   end
 end
 
 def delete_keys_from_digitalocean!
-  kitchen_keys.each do |k|
-    compute.ssh_keys.each { |kobj| kobj.destroy if kobj.name == k }
+  kitchen_keys.each_with_index do |_, i|
+    compute.ssh_keys.each { |kobj| kobj.destroy if kobj.name == key_name(i) }
   end
 end
 
