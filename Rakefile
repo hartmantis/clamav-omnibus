@@ -58,6 +58,7 @@ namespace :build_and_deploy do
     instance.converge
   end
 
+  # TODO: Move these key management pieces out to their own library somewhere
   task :deploy_keys do
     upload_keys_to_digitalocean!
   end
