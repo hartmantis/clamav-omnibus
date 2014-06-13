@@ -18,7 +18,9 @@
 # limitations under the License.
 #
 
+# The user under whom the package repo exists
 default['package_cloud']['user'] = nil
+# The token of the user above or another user that has commit privileges
 default['package_cloud']['token'] = nil
 
 case node['platform_family']
