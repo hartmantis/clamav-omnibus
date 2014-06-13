@@ -25,6 +25,12 @@ def key_name(index)
   "clamav-omnibus-deploy-#{ENV['TRAVIS_BUILD_NUMBER']}-#{index}"
 end
 
+def ssh_key_ids
+  kitchen_keys.map_with_index do |_, i|
+    key_name(i)
+  end.join(', ')
+end
+
 def upload_keys_to_digitalocean!
   kitchen_keys.each_with_index do |k, i|
     compute.ssh_keys.create(name: key_name(i),
@@ -37,6 +43,8 @@ def delete_keys_from_digitalocean!
     compute.ssh_keys.each { |kobj| kobj.destroy if kobj.name == key_name(i) }
   end
 end
+
+ENV['DIGITALOCEAN_SSH_KEY_IDS'] = ssh_key_ids
 
 RuboCop::RakeTask.new do |task|
   task.patterns = %w(**/*.rb)
