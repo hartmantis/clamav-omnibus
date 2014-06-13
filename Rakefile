@@ -26,7 +26,7 @@ def key_name(index)
 end
 
 def ssh_key_ids
-  kitchen_keys.map_with_index do |_, i|
+  kitchen_keys.map.with_index do |_, i|
     key_name(i)
   end.join(', ')
 end
