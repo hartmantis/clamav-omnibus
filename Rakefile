@@ -88,4 +88,6 @@ namespace :build_and_deploy do
   task default: %w(deploy_keys all clean_up_keys)
 end
 
+task build_and_deploy: %w(build_and_deploy:default)
+
 task default: %w(rubocop build_and_deploy)
