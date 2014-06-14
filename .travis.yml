@@ -1,5 +1,8 @@
 language: ruby
 
+before_script:
+  - ssh-keygen -t dsa -f ~/.ssh/id_dsa -b 768 -P ''
+
 env:
   global:
     - KITCHEN_GLOBAL_YAML=.kitchen.travis.yml

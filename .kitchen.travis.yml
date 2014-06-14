@@ -1,4 +1,3 @@
 ---
 driver:
   name: digitalocean
-  ssh_key: /etc/ssh/ssh_host_dsa_key
