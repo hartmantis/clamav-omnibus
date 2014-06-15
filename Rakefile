@@ -7,6 +7,8 @@ require 'fog'
 require 'kitchen'
 require 'kitchen/rake_tasks'
 
+puts 'Done requiring...'
+
 def instances
   Kitchen::Config.new(
     loader: Kitchen::Loader::YAML.new(
@@ -50,13 +52,18 @@ def delete_keys_from_digitalocean!
   end
 end
 
+puts 'Done defining methods'
+
+puts "Setting DIGITALOCEAN_SSH_KEY_IDS to: #{ssh_key_ids}"
 ENV['DIGITALOCEAN_SSH_KEY_IDS'] = ssh_key_ids
 
 RuboCop::RakeTask.new do |task|
   task.patterns = %w(**/*.rb)
 end
+puts 'Defined Rubocop tasks...'
 
 Kitchen::RakeTasks.new
+puts 'Defined Kitchen tasks...'
 
 namespace :build_and_deploy do
   # Hack up the run_list to make an already-converged-and-verified instance
@@ -93,7 +100,9 @@ namespace :build_and_deploy do
 
   task default: %w(deploy_keys all clean_up_keys)
 end
+puts 'Defined build_and_deploy namespace...'
 
 task build_and_deploy: %w(build_and_deploy:default)
 
 task default: %w(rubocop build_and_deploy)
+puts 'Defined default task...'
