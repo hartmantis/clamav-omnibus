@@ -59,6 +59,9 @@ RuboCop::RakeTask.new do |task|
 end
 puts 'Defined Rubocop tasks...'
 
+puts Kitchen::Config.new
+puts 'Printed a Kitchen config...'
+
 Kitchen::RakeTasks.new
 puts 'Defined Kitchen tasks...'
 
