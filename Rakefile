@@ -59,11 +59,24 @@ RuboCop::RakeTask.new do |task|
 end
 puts 'Defined Rubocop tasks...'
 
-puts Kitchen::Config.new
-puts 'Printed a Kitchen config...'
+Kitchen.logger = Kitchen.default_file_logger
+puts 'Set up Kitchen logger...'
+namespace 'kitchen' do
+  Kitchen::Config.new.instances.each do |i|
+    puts "Instance: #{i}"
+    desc "Run instance #{i.name}"
+    task i.name do
+      i.test(:always)
+    end
+  end
+end
+puts 'Set up Kitchen rake tasks'
 
-Kitchen::RakeTasks.new
-puts 'Defined Kitchen tasks...'
+
+
+
+#Kitchen::RakeTasks.new
+#puts 'Defined Kitchen tasks...'
 
 namespace :build_and_deploy do
   # Hack up the run_list to make an already-converged-and-verified instance
