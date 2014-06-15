@@ -33,17 +33,17 @@ def key_name(index)
   "clamav-omnibus-deploy-#{ENV['TRAVIS_BUILD_NUMBER']}-#{index}"
 end
 
-def ssh_key_ids
-  kitchen_keys.map.with_index do |_, i|
-    key_name(i)
-  end.join(', ')
-end
-
 def upload_keys_to_digitalocean!
   kitchen_keys.each_with_index do |k, i|
     compute.ssh_keys.create(name: key_name(i),
                             ssh_pub_key: File.open("#{k}.pub").read)
   end
+end
+
+def ssh_key_ids
+  kitchen_keys.map.with_index do |_, i|
+    compute.ssh_keys.map { |k| k.id if k.name == key_name(i) }.compact
+  end.flatten.join(', ')
 end
 
 def delete_keys_from_digitalocean!
@@ -53,9 +53,6 @@ def delete_keys_from_digitalocean!
 end
 
 puts 'Done defining methods'
-
-puts "Setting DIGITALOCEAN_SSH_KEY_IDS to: #{ssh_key_ids}"
-ENV['DIGITALOCEAN_SSH_KEY_IDS'] = ssh_key_ids
 
 RuboCop::RakeTask.new do |task|
   task.patterns = %w(**/*.rb)
@@ -82,6 +79,7 @@ namespace :build_and_deploy do
   # TODO: Move these key management pieces out to their own library somewhere
   task :deploy_keys do
     upload_keys_to_digitalocean!
+    ENV['DIGITALOCEAN_SSH_KEY_IDS'] = ssh_key_ids
   end
 
   task :clean_up_keys do
