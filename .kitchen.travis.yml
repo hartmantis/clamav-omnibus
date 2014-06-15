@@ -1,4 +1,4 @@
 ---
 driver:
   name: digitalocean
-  ssh_key: ~/.ssh/id_rsa
+  ssh_key: <%= File.expand_path('~/.ssh/id_rsa') %>
