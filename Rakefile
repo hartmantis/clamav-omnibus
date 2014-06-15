@@ -8,7 +8,13 @@ require 'kitchen'
 require 'kitchen/rake_tasks'
 
 def instances
-  Kitchen::Config.new.instances
+  Kitchen::Config.new(
+    loader: Kitchen::Loader::YAML.new(
+      project_config: ENV['KITCHEN_YAML'],
+      local_config: ENV['KITCHEN_LOCAL_YAML'],
+      global_config: ENV['KITCHEN_GLOBAL_YAML']
+    )
+  ).instances
 end
 
 def compute

@@ -1,12 +1,13 @@
 language: ruby
 
 before_script:
-  - ssh-keygen -t dsa -f ~/.ssh/id_dsa -b 768 -P ''
+  - ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ''
 
 env:
   global:
-    - KITCHEN_GLOBAL_YAML=.kitchen.travis.yml
+    - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
     - PACKAGECLOUD_USER=RoboticCheese
+    - DIGITALOCEAN_SSH_KEY_IDS=TBD
     - secure: "qUTq45+K5jFd6AMLP+clHWru6RrhiUICCyOeFVTggBqm7mAQ3dK9ZBHFp7nmVSRkx9WgrzjM3ce/CL2Nl73qnZ//7tZWVRlMnxR2r7Yz/39WGIhshWMFUweIgZT/FoJwVKeqbkwKsQexgLmSpjTk6YSQThI6SiOOWoTUYm1wz1g="
     - secure: "SDYTF8vvp7yXLFIz5idVYb6rYWJd5x1A369zfKjJLRQYgEqIjyeXpqUYxajXwUC7UYY0CfunSMoo4amG3IQh0JNIlIIL168AvEU+/RJTLmuVpDPcB12n42cFW/TDbyX5Pi4uo7UzBuQMP200vfdLNvNrXmG89zQJM9a93c4RfTk="
     - secure: "ovvUitM4RbcocBTtQfeP2HZ46j+jfs8zo+Ad7te0V0t3JM3wPmQjMvZ2XB0BcUVFmEEfsu6pjf6aMBCPZiAFkCL+v56X4F4XNOM0hHndviyQua7dETAsyTfYN3rO29mpo+ccxPPGSdOTedsdmfyYE3urjL0t93Hqkc8cxGydils="
