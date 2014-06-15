@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/opscode/omnibus-software.git
-  revision: 15d17c54eaddcd82a5dd878f9f8a8933f842be78
+  revision: da6df9a70a95ae3cfc8ca63606f807db8317782f
   specs:
     omnibus-software (0.0.1)
 
@@ -90,7 +90,7 @@ GEM
       backports (>= 2.6.2)
       cabin (> 0)
       http_parser.rb (= 0.5.3)
-    hashie (2.1.1)
+    hashie (2.1.2)
     hitimes (1.2.1)
     http_parser.rb (0.5.3)
     ipaddress (0.8.0)
@@ -118,7 +118,7 @@ GEM
     nio4r (1.0.0)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
-    octokit (3.1.0)
+    octokit (3.1.2)
       sawyer (~> 0.5.3)
     ohai (6.22.0)
       ipaddress
