@@ -61,6 +61,8 @@ puts 'Defined Rubocop tasks...'
 
 Kitchen.logger = Kitchen.default_file_logger
 puts 'Set up Kitchen logger...'
+puts "Kitchen config: #{Kitchen::Config.new}"
+puts "Kitchen instances: #{Kitchen::Config.new.instances}"
 namespace 'kitchen' do
   Kitchen::Config.new.instances.each do |i|
     puts "Instance: #{i}"
