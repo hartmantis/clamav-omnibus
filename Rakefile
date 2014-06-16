@@ -7,6 +7,8 @@ require 'fog'
 require 'kitchen'
 require 'kitchen/rake_tasks'
 
+# TODO: Having this class in the Rakefile means Kitchen can't find it when
+# trying to call it normally instead of through rake
 module ClamAVOmnibus
   # Helper methods for uploading and deleting DigitalOcean build keys
   #
