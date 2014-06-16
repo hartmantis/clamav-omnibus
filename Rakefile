@@ -71,6 +71,7 @@ namespace :build_and_deploy do
   # TODO: Move these key management pieces out to their own library somewhere
   task :deploy_keys do
     upload_keys_to_digitalocean!
+    puts "Setting DIGITALOCEAN_SSH_KEY_IDS=#{ssh_key_ids}"
     ENV['DIGITALOCEAN_SSH_KEY_IDS'] = ssh_key_ids
   end
 
