@@ -50,9 +50,7 @@ def delete_keys_from_digitalocean!
   end
 end
 
-RuboCop::RakeTask.new do |task|
-  task.patterns = %w(**/*.rb)
-end
+RuboCop::RakeTask.new
 
 Kitchen::RakeTasks.new
 
