@@ -51,12 +51,14 @@ module ClamAVOmnibus
     end
 
     def self.upload_key_to_digitalocean!
-      compute.ssh_keys.create(name: key_name,
-                              ssh_pub_key: File.open(public_key_file).read)
+      unless compute.ssh_keys.index { |k| k.name == key_name }
+        compute.ssh_keys.create(name: key_name,
+                                ssh_pub_key: File.open(public_key_file).read)
+      end
       ssh_key_ids
     end
 
-    def self.delete_keys_from_digitalocean!
+    def self.delete_key_from_digitalocean!
       compute.ssh_keys.each { |k| k.destroy if k.name == key_name }
     end
   end
@@ -81,7 +83,7 @@ namespace :build_and_deploy do
   end
 
   task :clean_up_keys do
-    delete_keys_from_digitalocean!
+    delete_key_from_digitalocean!
   end
 
   ClamAVOmnibus::Helpers.instances.each do |i|
