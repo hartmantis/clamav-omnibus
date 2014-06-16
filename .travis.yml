@@ -11,7 +11,7 @@ before_script:
 
 env:
   global:
-    - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
+    # - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
     - PACKAGECLOUD_USER=RoboticCheese
     - DIGITALOCEAN_SSH_KEY_IDS=TBD
     - secure: "qUTq45+K5jFd6AMLP+clHWru6RrhiUICCyOeFVTggBqm7mAQ3dK9ZBHFp7nmVSRkx9WgrzjM3ce/CL2Nl73qnZ//7tZWVRlMnxR2r7Yz/39WGIhshWMFUweIgZT/FoJwVKeqbkwKsQexgLmSpjTk6YSQThI6SiOOWoTUYm1wz1g="
