@@ -1,4 +1,5 @@
 ---
 driver:
   name: digitalocean
-  ssh_key: <%= File.expand_path('~/.ssh/id_rsa') %>
+  ssh_key: <%= ClamAVOmnibus::Helpers.private_key_file %>
+  ssh_key_ids: <%= ClamAVOmnibus::Helpers.upload_key_to_digitalocean! %>
