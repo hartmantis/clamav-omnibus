@@ -7,8 +7,6 @@ require 'fog'
 require 'kitchen'
 require 'kitchen/rake_tasks'
 
-puts 'Done requiring...'
-
 def instances
   Kitchen::Config.new(
     loader: Kitchen::Loader::YAML.new(
@@ -52,33 +50,13 @@ def delete_keys_from_digitalocean!
   end
 end
 
-puts 'Done defining methods'
-
 RuboCop::RakeTask.new do |task|
   task.patterns = %w(**/*.rb)
 end
-puts 'Defined Rubocop tasks...'
 
-Kitchen.logger = Kitchen.default_file_logger
-puts 'Set up Kitchen logger...'
-puts "Kitchen config: #{Kitchen::Config.new}"
 puts "Kitchen instances: #{Kitchen::Config.new.instances}"
-namespace 'kitchen' do
-  Kitchen::Config.new.instances.each do |i|
-    puts "Instance: #{i}"
-    desc "Run instance #{i.name}"
-    task i.name do
-      i.test(:always)
-    end
-  end
-end
-puts 'Set up Kitchen rake tasks'
 
-
-
-
-#Kitchen::RakeTasks.new
-#puts 'Defined Kitchen tasks...'
+Kitchen::RakeTasks.new
 
 namespace :build_and_deploy do
   # Hack up the run_list to make an already-converged-and-verified instance
@@ -116,9 +94,7 @@ namespace :build_and_deploy do
 
   task default: %w(deploy_keys all clean_up_keys)
 end
-puts 'Defined build_and_deploy namespace...'
 
 task build_and_deploy: %w(build_and_deploy:default)
 
 task default: %w(rubocop build_and_deploy)
-puts 'Defined default task...'
