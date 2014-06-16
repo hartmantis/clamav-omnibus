@@ -7,54 +7,62 @@ require 'fog'
 require 'kitchen'
 require 'kitchen/rake_tasks'
 
-def instances
-  Kitchen::Config.new(
-    loader: Kitchen::Loader::YAML.new(
-      project_config: ENV['KITCHEN_YAML'],
-      local_config: ENV['KITCHEN_LOCAL_YAML'],
-      global_config: ENV['KITCHEN_GLOBAL_YAML']
-    )
-  ).instances
-end
+module ClamAVOmnibus
+  # Helper methods for uploading and deleting DigitalOcean build keys
+  #
+  # @author Jonathan Hartman <j@p4nt5.com>
+  class Helpers
+    def self.instances
+      Kitchen::Config.new(
+        loader: Kitchen::Loader::YAML.new(
+          project_config: ENV['KITCHEN_YAML'],
+          local_config: ENV['KITCHEN_LOCAL_YAML'],
+          global_config: ENV['KITCHEN_GLOBAL_YAML']
+        )
+      ).instances
+    end
 
-def compute
-  Fog::Compute.new(provider: 'DigitalOcean',
-                   digitalocean_client_id: ENV['DIGITALOCEAN_CLIENT_ID'],
-                   digitalocean_api_key: ENV['DIGITALOCEAN_API_KEY'])
-end
+    def self.compute
+      Fog::Compute.new(provider: 'DigitalOcean',
+                       digitalocean_client_id: ENV['DIGITALOCEAN_CLIENT_ID'],
+                       digitalocean_api_key: ENV['DIGITALOCEAN_API_KEY'])
+    end
 
-def kitchen_keys
-  instances.map { |i| i.driver[:ssh_key] }.uniq
-end
+    def self.key_name
+      "clamav-omnibus-deploy-#{ENV['TRAVIS_BUILD_NUMBER']}"
+    end
 
-def key_name(index)
-  "clamav-omnibus-deploy-#{ENV['TRAVIS_BUILD_NUMBER']}-#{index}"
-end
+    def self.private_key_file
+      File.expand_path('~/.ssh/id_rsa')
+    end
 
-def ssh_key_ids
-  kitchen_keys.map.with_index do |_, i|
-    key_name(i)
-  end.join(', ')
-end
+    def self.public_key_file
+      "#{private_key_file}.pub"
+    end
 
-def upload_keys_to_digitalocean!
-  kitchen_keys.each_with_index do |k, i|
-    compute.ssh_keys.create(name: key_name(i),
-                            ssh_pub_key: File.open("#{k}.pub").read)
+    def self.ssh_key
+      private_key_file
+    end
+
+    def self.ssh_key_ids
+      compute.ssh_keys.map do |k|
+        k.id if k.name == key_name
+      end.compact.join(', ')
+    end
+
+    def self.upload_key_to_digitalocean!
+      compute.ssh_keys.create(name: key_name,
+                              ssh_pub_key: File.open(public_key_file).read)
+      ssh_key_ids
+    end
+
+    def self.delete_keys_from_digitalocean!
+      compute.ssh_keys.each { |k| k.destroy if k.name == key_name }
+    end
   end
 end
 
-def delete_keys_from_digitalocean!
-  kitchen_keys.each_with_index do |_, i|
-    compute.ssh_keys.each { |kobj| kobj.destroy if kobj.name == key_name(i) }
-  end
-end
-
-ENV['DIGITALOCEAN_SSH_KEY_IDS'] = ssh_key_ids
-
-RuboCop::RakeTask.new do |task|
-  task.patterns = %w(**/*.rb)
-end
+RuboCop::RakeTask.new
 
 Kitchen::RakeTasks.new
 
@@ -72,16 +80,11 @@ namespace :build_and_deploy do
     instance.converge
   end
 
-  # TODO: Move these key management pieces out to their own library somewhere
-  task :deploy_keys do
-    upload_keys_to_digitalocean!
-  end
-
   task :clean_up_keys do
     delete_keys_from_digitalocean!
   end
 
-  instances.each do |i|
+  ClamAVOmnibus::Helpers.instances.each do |i|
     desc "Build and deploy for #{i.name}"
     task i.name do
       i.converge && i.verify && deploy(i) && i.destroy
@@ -89,9 +92,9 @@ namespace :build_and_deploy do
   end
 
   desc 'Build and deploy for all instances'
-  task all: instances.map { |i| i.name }
+  task all: ClamAVOmnibus::Helpers.instances.map { |i| i.name }
 
-  task default: %w(deploy_keys all clean_up_keys)
+  task default: %w(all clean_up_keys)
 end
 
 task build_and_deploy: %w(build_and_deploy:default)
