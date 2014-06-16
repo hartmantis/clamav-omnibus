@@ -51,7 +51,7 @@ execute 'Install bundled Gems' do
   command <<-OMNIBUS_BUILD
     su - #{node['omnibus']['build_user']} -c \
       'cd #{node['omnibus']['build_dir']} && \
-      bundle install --binstubs'
+      bundle install --binstubs --without=control_node'
   OMNIBUS_BUILD
 end
 

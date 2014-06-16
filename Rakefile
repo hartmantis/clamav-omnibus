@@ -7,6 +7,8 @@ require 'fog'
 require 'kitchen'
 require 'kitchen/rake_tasks'
 
+# TODO: Having this class in the Rakefile means Kitchen can't find it when
+# trying to call it normally instead of through rake
 module ClamAVOmnibus
   # Helper methods for uploading and deleting DigitalOcean build keys
   #
@@ -51,12 +53,14 @@ module ClamAVOmnibus
     end
 
     def self.upload_key_to_digitalocean!
-      compute.ssh_keys.create(name: key_name,
-                              ssh_pub_key: File.open(public_key_file).read)
+      unless compute.ssh_keys.index { |k| k.name == key_name }
+        compute.ssh_keys.create(name: key_name,
+                                ssh_pub_key: File.open(public_key_file).read)
+      end
       ssh_key_ids
     end
 
-    def self.delete_keys_from_digitalocean!
+    def self.delete_key_from_digitalocean!
       compute.ssh_keys.each { |k| k.destroy if k.name == key_name }
     end
   end
@@ -81,20 +85,31 @@ namespace :build_and_deploy do
   end
 
   task :clean_up_keys do
-    delete_keys_from_digitalocean!
+    delete_key_from_digitalocean!
   end
 
   ClamAVOmnibus::Helpers.instances.each do |i|
     desc "Build and deploy for #{i.name}"
     task i.name do
-      i.converge && i.verify && deploy(i) && i.destroy
+      i.converge
+      i.verify
+      deploy(i) if ENV['TRAVIS_BRANCH'] == 'master'
+      i.destroy
     end
   end
+
+  desc 'Destroy all build instances'
+  task :destroy do
+    ClamAVOmnibus::Helpers.instances.each { |i| i.destroy }
+  end
+
+  desc 'Destroy all build instances and clean up temp keys'
+  task clean_up: %w(destroy clean_up_keys)
 
   desc 'Build and deploy for all instances'
   task all: ClamAVOmnibus::Helpers.instances.map { |i| i.name }
 
-  task default: %w(all clean_up_keys)
+  task default: %w(all clean_up)
 end
 
 task build_and_deploy: %w(build_and_deploy:default)
