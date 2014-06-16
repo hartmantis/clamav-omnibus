@@ -11,7 +11,25 @@ driver:
 
 provisioner:
   require_chef_omnibus: true
-  cookbook_files_glob: "**/*"
+  cookbook_files_glob: <%= %w(
+    README.*,
+    metadata.{json,rb},
+    attributes/**/*,
+    definitions/**/*,
+    files/**/*,
+    libraries/**/*,
+    providers/**/*,
+    recipes/**/*,
+    resources/**/*,
+    templates/**/*,
+    CHANGELOG.*,
+    Gemfile*,
+    Rakefile,
+    config/**/*,
+    init.d/**/*,
+    omnibus.rb,
+    package-scripts/**/*
+  ).join(',') %>
 
 platforms:
 #  - name: ubuntu-10.04
