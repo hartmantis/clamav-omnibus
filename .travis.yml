@@ -9,12 +9,6 @@ before_script:
   # ENV['KITCHEN_LOCAL_YAML'] in the rake tasks in addition to in the CLI
   - cp .kitchen.travis.yml .kitchen.local.yml
 
-script:
-  - bundle exec kitchen --help
-  - bundle exec kitchen list
-  - bundle exec rake --tasks
-  - bundle exec rake
-
 env:
   global:
     - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
