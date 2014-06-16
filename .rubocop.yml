@@ -1,3 +1,6 @@
+AllCops:
+  Exclude:
+    - "vendor/**/*"
 SingleSpaceBeforeFirstArg:
   Exclude:
     - "**/metadata.rb"
