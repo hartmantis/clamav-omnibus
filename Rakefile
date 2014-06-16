@@ -93,10 +93,18 @@ namespace :build_and_deploy do
     end
   end
 
+  desc 'Destroy all build instances'
+  task :destroy do
+    ClamAVOmnibus::Helpers.instances.each { |i| i.destroy }
+  end
+
+  desc 'Destroy all build instances and clean up temp keys'
+  task clean_up: %w(destroy clean_up_keys)
+
   desc 'Build and deploy for all instances'
   task all: ClamAVOmnibus::Helpers.instances.map { |i| i.name }
 
-  task default: %w(all clean_up_keys)
+  task default: %w(all clean_up)
 end
 
 task build_and_deploy: %w(build_and_deploy:default)
