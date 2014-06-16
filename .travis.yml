@@ -5,6 +5,9 @@ rvm:
 
 before_script:
   - ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ''
+  # TODO: This is needed pending a fix to get Test Kitchen to respect
+  # ENV['KITCHEN_LOCAL_YAML'] in the rake tasks in addition to in the CLI
+  - cp .kitchen.travis.yml .kitchen.local.yml
 
 script:
   - bundle exec kitchen --help

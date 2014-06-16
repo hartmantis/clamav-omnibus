@@ -54,8 +54,6 @@ RuboCop::RakeTask.new do |task|
   task.patterns = %w(**/*.rb)
 end
 
-puts "Kitchen instances: #{Kitchen::Config.new.instances}"
-
 Kitchen::RakeTasks.new
 
 namespace :build_and_deploy do
