@@ -89,7 +89,10 @@ namespace :build_and_deploy do
   ClamAVOmnibus::Helpers.instances.each do |i|
     desc "Build and deploy for #{i.name}"
     task i.name do
-      i.converge && i.verify && deploy(i) && i.destroy
+      i.converge
+      i.verify
+      deploy(i) if ENV['TRAVIS_BRANCH'] == 'master'
+      i.destroy
     end
   end
 
