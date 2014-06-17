@@ -44,6 +44,7 @@ ruby_block 'copy_everything_to_build_dir' do
   not_if { File.exist?(touch_when_complete) }
 end
 
+# TODO: Installing and using the Chef-DK here might save a bunch of time
 execute 'Install bundled Gems' do
   # The execute resource's `user` method doesn't allocate a TTY, doesn't pull
   # in all the environment variables Bundler and Omnibus need to run,
@@ -55,12 +56,17 @@ execute 'Install bundled Gems' do
   OMNIBUS_BUILD
 end
 
-execute 'Run Omnibus build' do
-  command <<-OMNIBUS_BUILD
-    su - #{node['omnibus']['build_user']} -c \
-      'cd #{node['omnibus']['build_dir']} && \
-      bin/omnibus build #{node['omnibus']['project_name']}'
-  OMNIBUS_BUILD
+ruby_block 'Run Omnibus build' do
+  block do
+    command = <<-OMNIBUS_BUILD
+      su - #{node['omnibus']['build_user']} -c \
+        'cd #{node['omnibus']['build_dir']} && \
+        bin/omnibus build #{node['omnibus']['project_name']} -l debug'
+    OMNIBUS_BUILD
+
+    require 'mixlib/shellout'
+    Mixlib::ShellOut.new(command, live_stream: STDOUT).run_command
+  end
   not_if { File.exist?(touch_when_complete) }
 end
 
