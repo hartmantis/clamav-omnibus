@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 
 name 'clamav'
-default_version '0.98.3'
+default_version '0.98.4'
 
 dependency 'bzip2'
 dependency 'curl'
@@ -11,9 +11,9 @@ dependency 'ncurses'
 dependency 'openssl'
 dependency 'zlib'
 
-source url: 'http://downloads.sourceforge.net/project/clamav/clamav/0.98.3/' \
-            'clamav-0.98.3.tar.gz?r=&ts=1399495935&use_mirror=softlayer-dal',
-       md5: 'b649d35ee85d4d6075a98173dd255c17'
+source url: 'http://downloads.sourceforge.net/project/clamav/clamav/0.98.4/' \
+            'clamav-0.98.4.tar.gz?ts=1403123996&use_mirror=tcpdiag',
+       md5: '6d409eab6c311de05a0a591fccd2ec83'
 
 relative_path "#{name}-#{version}"
 

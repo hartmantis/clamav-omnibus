@@ -46,7 +46,7 @@ suites:
     attributes:
       omnibus:
         project_name: clamav
-        project_version: 0.98.3
+        project_version: 0.98.4
         project_build: 1
         build_user: omnibus
         build_dir: /home/omnibus/clamav
