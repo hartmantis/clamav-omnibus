@@ -5,7 +5,7 @@ maintainer 'Jonathan Hartman'
 homepage 'https://github.com/RoboticCheese/clamav-omnibus'
 
 install_path '/opt/clamav'
-build_version '0.98.3'
+build_version '0.98.4'
 build_iteration 1
 
 # creates required build directories
