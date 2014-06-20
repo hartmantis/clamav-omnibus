@@ -61,7 +61,7 @@ ruby_block 'Run Omnibus build' do
     command = <<-OMNIBUS_BUILD
       su - #{node['omnibus']['build_user']} -c \
         'cd #{node['omnibus']['build_dir']} && \
-        bin/omnibus build #{node['omnibus']['project_name']} -l debug'
+        bin/omnibus build #{node['omnibus']['project_name']} -l info'
     OMNIBUS_BUILD
 
     require 'mixlib/shellout'
