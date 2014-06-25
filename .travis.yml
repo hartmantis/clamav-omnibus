@@ -1,8 +1,5 @@
 language: ruby
 
-rvm:
-  - 2.1.1
-
 before_script:
   - ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ''
   # TODO: This is needed pending a fix to get Test Kitchen to respect
