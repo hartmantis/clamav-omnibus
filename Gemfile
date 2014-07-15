@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 group :build_node do
-  gem 'omnibus', '~> 3.1'
+  gem 'omnibus', '~> 3.2.0.rc'
   gem 'omnibus-software', github: 'opscode/omnibus-software'
 end
 
