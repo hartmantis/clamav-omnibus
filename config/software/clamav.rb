@@ -53,7 +53,7 @@ build do
   ].join(' '), env: env
 
   command 'make check', env: env
-  command "make -j #{max_build_jobs}", env: env
+  command "make -j #{workers}", env: env
   command 'make install'
   command "mkdir -p #{install_dir}/db"
   %w(main.cvd daily.cvd bytecode.cvd safebrowsing.cvd).each do |f|
@@ -61,8 +61,8 @@ build do
   end
   command "mkdir -p #{install_dir}/init.d"
   %w(clamd freshclam).each do |f|
-    command "cp #{Config.project_root}/init.d/#{f}.init." \
-            "#{Ohai['platform_family']} #{install_dir}/init.d/#{f}"
+    copy "init.d/#{f}.init.#{Omnibus::Ohai['platform_family']}",
+         "#{install_dir}/init.d/#{f}"
   end
   # TODO: ClamAV's source includes a set of three `.sample` config files that
   # do not contain working configs. We need to create a set of all-defaults

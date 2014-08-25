@@ -28,23 +28,16 @@ file touch_when_complete do
   action :nothing
 end
 
-cookbook_path = File.join('/tmp/kitchen/cookbooks', cookbook_name.to_s)
-
-ruby_block 'copy_everything_to_build_dir' do
+ruby_block 'chown -r the build dir' do
+  # Otherwise we end up with garbage like /home/omnibus/clamav owned by vagrant
   block do
-    # Put everything in /home/omnibus to bypass issues with the contents of
-    # /tmp/kitchen being owned by root
     require 'fileutils'
-    FileUtils.rm_rf(node['omnibus']['build_dir'])
-    FileUtils.cp_r(cookbook_path, node['omnibus']['build_dir'])
     FileUtils.chown_R(node['omnibus']['build_user'],
                       node['omnibus']['build_user_group'],
                       node['omnibus']['build_dir'])
   end
-  not_if { File.exist?(touch_when_complete) }
 end
 
-# TODO: Installing and using the Chef-DK here might save a bunch of time
 execute 'Install bundled Gems' do
   # The execute resource's `user` method doesn't allocate a TTY, doesn't pull
   # in all the environment variables Bundler and Omnibus need to run,

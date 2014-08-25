@@ -4,32 +4,16 @@ driver:
   customize:
     cpus: 2
     memory: 2048
+  synced_folders:
+    - ['.', '/home/omnibus/clamav', type: 'rsync']
   digitalocean_client_id: <%= ENV['DIGITALOCEAN_CLIENT_ID'] %>
   digitalocean_api_key: <%= ENV['DIGITALOCEAN_API_KEY'] %>
   ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEY_IDS'] %>
-  flavor: 4GB
+  flavor: 2GB
 
 provisioner:
+  name: chef_zero
   require_chef_omnibus: true
-  cookbook_files_glob: <%= %w(
-    README.*,
-    metadata.{json,rb},
-    attributes/**/*,
-    definitions/**/*,
-    files/**/*,
-    libraries/**/*,
-    providers/**/*,
-    recipes/**/*,
-    resources/**/*,
-    templates/**/*,
-    CHANGELOG.*,
-    Gemfile*,
-    Rakefile,
-    config/**/*,
-    init.d/**/*,
-    omnibus.rb,
-    package-scripts/**/*
-  ).join(',') %>
 
 platforms:
   - name: ubuntu-10.04
