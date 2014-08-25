@@ -48,24 +48,31 @@ end
 execute 'Install bundled Gems' do
   # The execute resource's `user` method doesn't allocate a TTY, doesn't pull
   # in all the environment variables Bundler and Omnibus need to run,
-  # otherwise we'd use `user`, `group`, and `cwd` for these
+  # hence the hackery here
+  user node['omnibus']['build_user']
+  cwd node['omnibus']['build_dir']
+  env 'HOME' => node['omnibus']['build_user_home']
   command <<-OMNIBUS_BUILD
-    su - #{node['omnibus']['build_user']} -c \
-      'cd #{node['omnibus']['build_dir']} && \
-      bundle install --binstubs --without=control_node'
+    chruby-exec #{node['omnibus']['ruby_version']} -- bundle install \
+      --binstubs --without=control_node --path .bundle
   OMNIBUS_BUILD
 end
 
+# Run the build using Mixlib::ShellOut directly so we can enable live output
+# and keep "idle builds" from being incorrectly killed off
 ruby_block 'Run Omnibus build' do
   block do
     command = <<-OMNIBUS_BUILD
-      su - #{node['omnibus']['build_user']} -c \
-        'cd #{node['omnibus']['build_dir']} && \
-        bin/omnibus build #{node['omnibus']['project_name']} -l info'
+      chruby-exec #{node['omnibus']['ruby_version']} -- bundle exec \
+        bin/omnibus build #{node['omnibus']['project_name']} -l debug
     OMNIBUS_BUILD
 
     require 'mixlib/shellout'
-    Mixlib::ShellOut.new(command, live_stream: STDOUT).run_command
+    Mixlib::ShellOut.new(command,
+                         user: node['omnibus']['build_user'],
+                         cwd: node['omnibus']['build_dir'],
+                         env: { 'HOME' => node['omnibus']['build_user_home'] },
+                         live_stream: STDOUT).run_command
   end
   not_if { File.exist?(touch_when_complete) }
 end
